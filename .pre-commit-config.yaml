@@ -1,0 +1,165 @@
+---
+
+ci:
+  autoupdate_schedule: quarterly  # low frequency to reduce maintenance noise
+
+repos:
+- repo: https://github.com/astral-sh/ruff-pre-commit.git
+  rev: v0.12.4
+  hooks:
+  - id: ruff
+    args:
+    # Ref: https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    - --fix  # NOTE: When `--fix` is used, linting should be before ruff-format
+
+- repo: https://github.com/astral-sh/ruff-pre-commit.git
+  rev: v0.12.4
+  hooks:
+  - id: ruff-format
+    alias: ruff-format-first-pass
+    name: ruff-format (first pass)
+
+- repo: https://github.com/asottile/add-trailing-comma.git
+  rev: v3.2.0
+  hooks:
+  - id: add-trailing-comma
+
+- repo: https://github.com/astral-sh/ruff-pre-commit.git
+  rev: v0.12.4
+  hooks:
+  - id: ruff-format
+    alias: ruff-format-second-pass
+    name: ruff-format (second pass)
+
+- repo: https://github.com/Lucas-C/pre-commit-hooks.git
+  rev: v1.5.5
+  hooks:
+  - id: remove-tabs
+
+- repo: https://github.com/python-jsonschema/check-jsonschema.git
+  rev: 0.33.2
+  hooks:
+  - id: check-github-workflows
+    files: ^\.github/workflows/[^/]+$
+    types:
+    - yaml
+  - id: check-jsonschema
+    name: Check GitHub Workflows set timeout-minutes
+    args:
+    - --builtin-schema
+    - github-workflows-require-timeout
+    files: ^\.github/workflows/[^/]+$
+    types:
+    - yaml
+  - id: check-readthedocs
+
+- repo: https://github.com/pre-commit/pygrep-hooks.git
+  rev: v1.10.0
+  hooks:
+  - id: python-check-blanket-noqa
+  - id: python-check-mock-methods
+  - id: python-no-eval
+  - id: python-no-log-warn
+  - id: rst-backticks
+
+- repo: https://github.com/pre-commit/pre-commit-hooks.git
+  rev: v5.0.0
+  hooks:
+  # Side-effects:
+  - id: trailing-whitespace
+  - id: check-merge-conflict
+  - id: double-quote-string-fixer
+  - id: end-of-file-fixer
+  # Non-modifying checks:
+  - id: name-tests-test
+    files: >-
+      ^tests/[^_].*\.py$
+  - id: check-added-large-files
+  - id: check-byte-order-marker
+  - id: check-case-conflict
+  # disabled due to pre-commit/pre-commit-hooks#159
+  # - id: check-docstring-first
+  - id: check-json
+  - id: check-symlinks
+  - id: check-yaml
+  - id: detect-private-key
+
+  # Heavy checks:
+  - id: check-ast
+  - id: debug-statements
+
+- repo: https://github.com/codespell-project/codespell.git
+  rev: v2.4.1
+  hooks:
+  - id: codespell
+    exclude: >-
+      ^\.github/\.json-schemas/.*\.json$
+
+- repo: https://github.com/openstack/bashate.git
+  rev: 2.1.1
+  hooks:
+  - id: bashate
+
+- repo: https://github.com/shellcheck-py/shellcheck-py.git
+  rev: v0.10.0.1
+  hooks:
+  - id: shellcheck
+
+- repo: https://github.com/Lucas-C/pre-commit-hooks-lxml.git
+  rev: v1.1.0
+  hooks:
+  - id: forbid-html-img-without-alt-text
+
+- repo: https://github.com/pre-commit/mirrors-mypy.git
+  rev: v1.17.0
+  hooks:
+  - id: mypy
+    alias: mypy-py313
+    name: MyPy, for Python 3.13
+    additional_dependencies:
+    - lxml  # dep of `--txt-report`, `--cobertura-xml-report` & `--html-report`
+    - pytest  # tests are also type-checked
+    args:
+    - --python-version=3.13
+    - --any-exprs-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --cobertura-xml-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --html-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --linecount-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --linecoverage-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --lineprecision-report=.tox/.tmp/.test-results/mypy--py-3.13
+    - --txt-report=.tox/.tmp/.test-results/mypy--py-3.13
+    pass_filenames: false
+  - id: mypy
+    alias: mypy-py311
+    name: MyPy, for Python 3.11
+    additional_dependencies:
+    - lxml  # dep of `--txt-report`, `--cobertura-xml-report` & `--html-report`
+    - pytest  # tests are also type-checked
+    args:
+    - --python-version=3.11
+    - --any-exprs-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --cobertura-xml-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --html-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --linecount-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --linecoverage-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --lineprecision-report=.tox/.tmp/.test-results/mypy--py-3.11
+    - --txt-report=.tox/.tmp/.test-results/mypy--py-3.11
+    pass_filenames: false
+  - id: mypy
+    alias: mypy-py39
+    name: MyPy, for Python 3.9
+    additional_dependencies:
+    - lxml  # dep of `--txt-report`, `--cobertura-xml-report` & `--html-report`
+    - pytest  # tests are also type-checked
+    args:
+    - --python-version=3.9
+    - --any-exprs-report=.tox/.tmp/.test-results/mypy--py-3.9
+    - --cobertura-xml-report=.tox/.tmp/.test-results/mypy--py-3.9
+    - --html-report=.tox/.tmp/.test-results/mypy--py-3.9
+    - --linecount-report=.tox/.tmp/.test-results/mypy--py-3.9
+    - --linecoverage-report=.tox/.tmp/.test-results/mypy--py-3.9
+    - --lineprecision-report=.tox/.tmp/.test-results/mypy--py-3.9
+    - --txt-report=.tox/.tmp/.test-results/mypy--py-3.9
+    pass_filenames: false
+
+...
