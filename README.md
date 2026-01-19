@@ -178,4 +178,4 @@ The contents of this project is released under the
 [BSD 3-clause license].
 
 
-[BSD 3-clause license]: LICENSE.md
+[BSD 3-clause license]: LICENSE
