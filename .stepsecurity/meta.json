@@ -1,0 +1,18 @@
+{
+   "schema_version": "1",
+   "onboarding_type": "copied",
+   "archived": false,
+   "maintained_action_name": "step-security/alls-green",
+   "upstream_full_repo_name": "re-actors/alls-green",
+   "action_type": "composite",
+   "last_release": {
+     "tag_name": "v1.2.3",
+     "created_at": "2026-05-19T06:37:37Z",
+     "published_at": "2026-05-23T15:07:17Z"
+   },
+   "sync": {
+     "ignore_presets": [
+       "defaults_v1"
+     ]
+   }
+ }
