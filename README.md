@@ -119,6 +119,46 @@ Failure or success result of the job matrix.
 
 Whether this check decided that the job matrix succeeded.
 
+Here's a simplified example of what testing against an unstable
+Python 3.11 release that is allowed to fail might look like:
+```yaml
+---
+
+...  # Some sections have been removed from the example to simplify it
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    matrix:
+       python-version:
+       - >-
+         3.10
+       - ~3.11.0-0
+
+    continue-on-error: >-
+      ${{ contains(matrix.python-version, '~') && true || false }}
+
+    steps:
+    - ...
+
+  check:
+    if: always()
+
+    needs:
+    - tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Decide whether the needed jobs succeeded or failed
+      uses: re-actors/alls-green@release/v1
+      with:
+        jobs: ${{ toJSON(needs) }}
+
+...
+```
+
 
 ## Gotchas
 
