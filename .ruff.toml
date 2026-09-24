@@ -1,5 +1,9 @@
 line-length = 79  # Accessibility-friendly
 
+[format]
+quote-style = "single"
+line-length = 79  # Accessibility-friendly
+
 namespace-packages = [
   "tests/",
 ]
